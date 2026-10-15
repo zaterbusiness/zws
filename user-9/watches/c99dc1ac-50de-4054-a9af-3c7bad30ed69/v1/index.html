@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Volex Watches</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--abyss:#0a1a2b;--deep:#12304d;--steel:#aab4bf;--orange:#ff6a2b;--mist:#dde3e8;--ink:#0e1822;--muted:#46576a;
+--head:"Bricolage Grotesque",system-ui,sans-serif;--body:"Instrument Sans",system-ui,sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--mist:#0f1a25;--ink:#e3eaf1;--muted:#9fb0c1}}
+:root[data-theme="dark"]{--mist:#0f1a25;--ink:#e3eaf1;--muted:#9fb0c1}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--abyss);font-family:var(--body);color:var(--ink);line-height:1.6;font-size:1.05rem}
+canvas#gl{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+section{position:relative;min-height:100vh;display:flex;align-items:center;padding:6rem 6vw}
+.in{position:relative;z-index:2;width:100%;max-width:1100px;margin:0 auto}
+.dark{background:radial-gradient(110% 90% at 75% 25%,var(--deep),var(--abyss));color:#e6eef6}
+.light{background:var(--mist)}
+.half{max-width:32rem}.right{margin-left:auto}
+h1,h2,h3{font-family:var(--head);margin:0 0 1rem;line-height:1}
+h1{font-weight:800;font-size:clamp(4rem,14vw,10.5rem);letter-spacing:.04em}
+h1 span{display:inline-block;animation:slide 1s cubic-bezier(.2,.8,.2,1) both}
+h2{font-weight:700;font-size:clamp(2.1rem,4.6vw,3.4rem);letter-spacing:-.01em}
+h3{font-size:1.2rem;font-weight:700}
+p{margin:0 0 1rem;max-width:32rem}
+.light p{color:var(--muted)}
+.lede{font-size:1.3rem;color:#b7c8da;max-width:24rem}
+.btn{display:inline-block;padding:.9rem 1.7rem;border-radius:6px;background:var(--orange);color:#1b0c02;font:inherit;font-weight:600;text-decoration:none;border:0;cursor:pointer}
+.btn.ghost{background:transparent;color:#e6eef6;border:1.5px solid var(--steel);margin-left:.6rem}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:1rem 6vw;color:#e6eef6}
+nav b{font-family:var(--head);font-weight:800;letter-spacing:.18em}
+nav a{color:inherit;text-decoration:none;margin-left:1.4rem;font-weight:500}
+nav a:hover{color:var(--orange)}
+.specs{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:1.4rem;border-top:1px solid var(--steel)}
+.specs div{padding:.9rem 0;border-bottom:1px solid color-mix(in srgb,var(--steel) 50%,transparent)}
+.specs dt{font-family:var(--head);font-size:1.7rem;font-weight:700;line-height:1.1}
+.specs dd{margin:0;color:var(--muted);font-size:.95rem}
+.dark .specs dd{color:#a9bccf}
+.models{display:grid;gap:.8rem;margin:1.4rem 0}
+.models button{display:flex;align-items:center;gap:1rem;text-align:left;padding:1rem 1.2rem;border-radius:10px;border:1.5px solid var(--steel);background:transparent;color:var(--ink);font:inherit;cursor:pointer}
+.models button[aria-pressed=true]{border-color:var(--orange);background:color-mix(in srgb,var(--orange) 10%,transparent)}
+.models i{width:2.2rem;height:2.2rem;border-radius:50%;border:3px solid var(--steel);flex:none}
+.models b{display:block;font-family:var(--head)}
+.models small{color:var(--muted)}
+.field{display:block;width:100%;max-width:26rem;margin-bottom:.9rem;padding:.8rem 1rem;border-radius:8px;border:1.5px solid var(--muted);background:transparent;color:var(--ink);font:inherit}
+.field option{color:#0e1822}
+#msg{margin-top:1rem;font-weight:500;color:#1f7a4a;min-height:1.5rem}
+footer.site{position:relative;z-index:2;background:var(--abyss);color:#9fb2c6;padding:2rem 6vw;text-align:center;font-size:.9rem}
+@keyframes slide{from{opacity:0;transform:translateX(-40%)}to{opacity:1;transform:none}}
+@media (max-width:800px){canvas#gl{opacity:.3}.half{max-width:none}.right{margin-left:0}.btn.ghost{margin:.8rem 0 0}nav a{display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}h1 span{animation:none}}
+</style>
+</head>
+<body>
+<canvas id="gl" aria-hidden="true"></canvas>
+<nav><b>VOLEX</b><div><a href="#craft">Craft</a><a href="#inside">Inside</a><a href="#collection">Collection</a><a href="#reserve">Reserve</a></div></nav>
+
+<section class="dark"><div class="in">
+ <h1 aria-label="Volex"><span style="animation-delay:.1s">V</span><span style="animation-delay:.2s">O</span><span style="animation-delay:.3s">L</span><span style="animation-delay:.4s">E</span><span style="animation-delay:.5s">X</span></h1>
+ <p class="lede">Automatic watches built to the second.</p>
+ <a class="btn" href="#collection">View the collection</a><a class="btn ghost" href="#inside">Look inside</a>
+</div></section>
+
+<section class="light" id="craft"><div class="in"><div class="half right">
+ <h2>A 40 mm case that wears light.</h2>
+ <p>Volex watches are cut from 316L steel, polished by hand and tested to 200 metres. The case is slim enough to slide under a cuff and tough enough to forget about.</p>
+ <dl class="specs">
+  <div><dt>40 mm</dt><dd>Case diameter</dd></div>
+  <div><dt>11.5 mm</dt><dd>Case thickness</dd></div>
+  <div><dt>200 m</dt><dd>Water resistance</dd></div>
+  <div><dt>42 hours</dt><dd>Power reserve</dd></div>
+ </dl>
+</div></div></section>
+
+<section class="dark" id="inside"><div class="in"><div class="half">
+ <h2>Built in layers.</h2>
+ <p class="lede" style="font-size:1.1rem;max-width:28rem">Scroll to pull the watch apart: sapphire crystal, hands, dial and steel case, each finished on its own.</p>
+ <p style="color:#a9bccf">The self-winding movement sits behind the dial. Every watch is regulated and timed for several days before it leaves the workshop.</p>
+</div></div></section>
+
+<section class="light" id="collection"><div class="in"><div class="half right">
+ <h2>Choose your dial.</h2>
+ <p>Three dials, one case. Tap a model and the watch changes.</p>
+ <div class="models" role="group" aria-label="Models">
+  <button type="button" aria-pressed="true" data-i="0"><i style="background:#12406b"></i><span><b>Volex Tide</b><small>Deep sea blue. Price on request</small></span></button>
+  <button type="button" aria-pressed="false" data-i="1"><i style="background:#2b2f33"></i><span><b>Volex Slate</b><small>Graphite grey. Price on request</small></span></button>
+  <button type="button" aria-pressed="false" data-i="2"><i style="background:#1f4a35"></i><span><b>Volex Fern</b><small>Forest green. Price on request</small></span></button>
+ </div>
+</div></div></section>
+
+<section class="dark" id="reserve"><div class="in"><div class="half">
+ <h2>Reserve yours.</h2>
+ <p class="lede" style="font-size:1.1rem;max-width:28rem">Each batch is small. Leave your details and we'll write to you when it's ready.</p>
+ <input class="field" id="nm" placeholder="Your name" aria-label="Your name" autocomplete="name">
+ <input class="field" id="em" placeholder="Email address" aria-label="Email address" type="email" autocomplete="email">
+ <select class="field" id="md" aria-label="Model"><option>Volex Tide</option><option>Volex Slate</option><option>Volex Fern</option></select>
+ <button class="btn" id="go" type="button">Reserve a watch</button>
+ <div id="msg" role="status" style="color:#8fe0b0"></div>
+</div></div></section>
+<footer class="site">Volex Watches. Assembled and tested by hand.</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+var names=['Volex Tide','Volex Slate','Volex Fern'],cur=0;
+var btns=[].slice.call(document.querySelectorAll('.models button'));
+function pick(i){cur=i;btns.forEach(function(b,k){b.setAttribute('aria-pressed',k===i)});document.getElementById('md').selectedIndex=i;if(window.__dial)window.__dial(i)}
+btns.forEach(function(b,k){b.addEventListener('click',function(){pick(k)})});
+document.getElementById('md').addEventListener('change',function(e){pick(e.target.selectedIndex)});
+document.getElementById('go').addEventListener('click',function(){
+ var n=document.getElementById('nm').value.trim(),e=document.getElementById('em').value.trim(),m=document.getElementById('msg');
+ if(!n||e.indexOf('@')<1){m.style.color='#ffb089';m.textContent='Enter your name and a valid email address.';return}
+ m.style.color='#8fe0b0';m.textContent='Thank you, '+n+'. We will email '+e+' about your '+names[cur]+'.';
+});
+(function(){
+try{
+ var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,TAU=Math.PI*2;
+ var R=new THREE.WebGLRenderer({canvas:document.getElementById('gl'),alpha:true,antialias:true});
+ R.setPixelRatio(Math.min(devicePixelRatio,2));R.outputEncoding=THREE.sRGBEncoding;
+ var S=new THREE.Scene(),C=new THREE.PerspectiveCamera(38,1,.1,60);C.position.z=8;
+
+ var ec=document.createElement('canvas');ec.width=512;ec.height=256;var ex=ec.getContext('2d');
+ var g=ex.createLinearGradient(0,0,0,256);g.addColorStop(0,'#dfe8f0');g.addColorStop(.5,'#7e8d9b');g.addColorStop(1,'#101a24');
+ ex.fillStyle=g;ex.fillRect(0,0,512,256);ex.fillStyle='#fff';ex.fillRect(60,40,90,60);ex.fillRect(300,30,140,40);ex.fillStyle='#ffd9c2';ex.fillRect(220,110,40,70);
+ var et=new THREE.CanvasTexture(ec);et.mapping=THREE.EquirectangularReflectionMapping;et.encoding=THREE.sRGBEncoding;
+ var pm=new THREE.PMREMGenerator(R);S.environment=pm.fromEquirectangular(et).texture;
+ var dl=new THREE.DirectionalLight(0xffffff,1.2);dl.position.set(3,4,6);S.add(dl);S.add(new THREE.AmbientLight(0xffffff,.35));
+
+ var steel=new THREE.MeshStandardMaterial({color:0xc9d0d7,metalness:1,roughness:.22});
+ var W=new THREE.Group(),gCase=new THREE.Group(),gDial=new THREE.Group(),gHands=new THREE.Group(),gGlass=new THREE.Group();
+ var body=new THREE.Mesh(new THREE.CylinderGeometry(1.22,1.22,.3,80),steel);body.rotation.x=Math.PI/2;gCase.add(body);
+ var bez=new THREE.Mesh(new THREE.TorusGeometry(1.12,.11,24,100),steel);bez.position.z=.17;gCase.add(bez);
+ [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(p){var l=new THREE.Mesh(new THREE.BoxGeometry(.3,.6,.26),steel);l.position.set(p[0]*.62,p[1]*1.3,0);gCase.add(l)});
+ var crown=new THREE.Mesh(new THREE.CylinderGeometry(.1,.1,.28,24),steel);crown.rotation.z=Math.PI/2;crown.position.x=1.34;gCase.add(crown);
+ var sm=new THREE.MeshStandardMaterial({color:0x1b1410,roughness:.85,metalness:0});
+ [2.45,-2.45].forEach(function(y){var s=new THREE.Mesh(new THREE.BoxGeometry(.98,2,.1),sm);s.position.set(0,y,-.03);gCase.add(s)});
+
+ var dc=document.createElement('canvas');dc.width=dc.height=1024;var dx=dc.getContext('2d');
+ var dt=new THREE.CanvasTexture(dc);dt.encoding=THREE.sRGBEncoding;dt.anisotropy=8;
+ var DIALS=[['#1d5f9a','#0b2a49'],['#4a5057','#16191c'],['#2f7a55','#0f2b1e']];
+ function drawDial(i){
+  var c=512,gr=dx.createRadialGradient(c,c,40,c,c,c);gr.addColorStop(0,DIALS[i][0]);gr.addColorStop(1,DIALS[i][1]);
+  dx.fillStyle=gr;dx.fillRect(0,0,1024,1024);dx.strokeStyle='#e8f0f6';
+  for(var k=0;k<60;k++){var a=k/60*TAU,big=k%5===0;dx.lineWidth=big?0:4;
+   if(!big){dx.beginPath();dx.moveTo(c+Math.sin(a)*450,c-Math.cos(a)*450);dx.lineTo(c+Math.sin(a)*475,c-Math.cos(a)*475);dx.stroke()}}
+  dx.fillStyle='#f1f6d8';
+  for(var h=0;h<12;h++){dx.save();dx.translate(c,c);dx.rotate(h/12*TAU);dx.fillRect(-14,-470,28,h%3===0?110:70);dx.restore()}
+  dx.fillStyle='#f4f8fb';dx.textAlign='center';dx.font='800 84px "Bricolage Grotesque",sans-serif';dx.fillText('VOLEX',c,360);
+  dx.font='500 30px "Instrument Sans",sans-serif';dx.fillText('AUTOMATIC  200 m',c,720);
+  dx.fillStyle='#f4f8fb';dx.fillRect(700,478,110,64);dx.fillStyle='#0b1a2a';dx.font='700 44px "Instrument Sans",sans-serif';dx.fillText(new Date().getDate(),755,525);
+  dt.needsUpdate=true;
+ }
+ drawDial(0);window.__dial=drawDial;
+ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){drawDial(cur)});
+ var dial=new THREE.Mesh(new THREE.CircleGeometry(1.02,80),new THREE.MeshStandardMaterial({map:dt,roughness:.55,metalness:.1}));dial.position.z=.15;gDial.add(dial);
+
+ function hand(w,len,tail,col,z){var geo=new THREE.BoxGeometry(w,len+tail,.03);geo.translate(0,(len-tail)/2,0);
+  var m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:col,metalness:.6,roughness:.3}));var p=new THREE.Group();m.position.z=z;p.add(m);gHands.add(p);return p}
+ var hh=hand(.1,.55,.08,0xe9eef2,.19),mh=hand(.07,.86,.1,0xe9eef2,.21),sh=hand(.022,.92,.22,0xff6a2b,.23);
+ var cap=new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,.06,24),new THREE.MeshStandardMaterial({color:0xff6a2b,metalness:.6,roughness:.3}));cap.rotation.x=Math.PI/2;cap.position.z=.25;gHands.add(cap);
+ var glass=new THREE.Mesh(new THREE.CircleGeometry(1.03,80),new THREE.MeshPhysicalMaterial({color:0xffffff,transparent:true,opacity:.12,roughness:0,clearcoat:1,metalness:0}));glass.position.z=.285;gGlass.add(glass);
+ W.add(gCase,gDial,gHands,gGlass);S.add(W);
+
+ var mob=function(){return innerWidth<800};
+ var P=[{x:2.1,ry:-.4,rx:.12,e:0,s:1},{x:-2.2,ry:.85,rx:.1,e:0,s:1.05},{x:2.2,ry:-.55,rx:.55,e:1,s:.95},{x:-2.2,ry:.1,rx:.05,e:0,s:1.1},{x:2.1,ry:-.3,rx:.1,e:0,s:1}];
+ var secs=[].slice.call(document.querySelectorAll('section')),T={x:2.1,ry:-.4,rx:.12,e:0,s:1},mx=0,my=0,t0=performance.now(),spin=0;
+ addEventListener('pointermove',function(e){mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5});
+ function size(){R.setSize(innerWidth,innerHeight,false);C.aspect=innerWidth/innerHeight;C.updateProjectionMatrix()}
+ addEventListener('resize',size);size();
+ var ease=function(x){return 1-Math.pow(1-x,3)};
+ window.__dial=function(i){drawDial(i);if(!reduce)spin=TAU};
+
+ (function frame(){
+  var t=(performance.now()-t0)/1000,vh=innerHeight,i=0;
+  for(var k=0;k<secs.length;k++){if(secs[k].getBoundingClientRect().top<=vh*.5)i=k}
+  var r=secs[i].getBoundingClientRect(),f=Math.min(1,Math.max(0,(vh*.5-r.top)/r.height));f=f*f*(3-2*f);
+  var a=P[i],b=P[Math.min(i+1,P.length-1)],tg={};
+  ['x','ry','rx','e','s'].forEach(function(n){tg[n]=a[n]+(b[n]-a[n])*f});
+  var kk=reduce?1:.08;for(var n in tg)T[n]+=(tg[n]-T[n])*kk;
+  spin*=.92;if(spin<.001)spin=0;
+  var fl=reduce?0:Math.sin(t*1.1)*.07;
+  W.position.set(mob()?0:T.x,fl,0);W.scale.setScalar(T.s*(mob()?.75:1));
+  W.rotation.set(T.rx+my*.2,T.ry+mx*.4+(reduce?0:Math.sin(t*.5)*.07)+spin,0);
+  gGlass.position.z=T.e*1.5;gHands.position.z=T.e*.9;gDial.position.z=T.e*.2;gCase.position.z=-T.e*.7;
+  var d=new Date(),sec=d.getSeconds()+d.getMilliseconds()/1000,mn=d.getMinutes()+sec/60,hr=(d.getHours()%12)+mn/60;
+  var it=reduce?1:ease(Math.min(1,t/2.6));
+  sh.rotation.z=-(sec/60*TAU+(1-it)*TAU*3);mh.rotation.z=-(mn/60*TAU)*it;hh.rotation.z=-(hr/12*TAU)*it;
+  R.render(S,C);requestAnimationFrame(frame);
+ })();
+}catch(e){document.getElementById('gl').style.display='none';console.error(e)}
+})();
+</script>
+<script>(function(){try{fetch('https://YOUR-BACKEND.onrender.com/api/analytics/track/c99dc1ac-50de-4054-a9af-3c7bad30ed69',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({referrer:document.referrer})}).catch(function(){});}catch(e){}})();</script>
+</body>
+</html>
